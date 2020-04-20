@@ -43,6 +43,7 @@ int    secure_ssl = 1;		/* Strict cert validation by default */
 int    broken_rtc = 0;		/* Validate certificate time by default */
 char  *ca_trust_file = NULL;	/* Custom CA trust file/bundle PEM format */
 int    verify_addr = 1;
+int    event_mode = 0;		/* Compat exec mode by default */
 char  *prognm = NULL;
 char  *ident = PACKAGE_NAME;
 char  *iface = NULL;
@@ -269,7 +270,10 @@ static int usage(int code)
 		"                                Default use ident NAME: %s/\n"
 		" -c, --cmd=/path/to/cmd         Script or command to run to check IP\n"
 		" -C, --continue-on-error        Ignore errors from DDNS provider\n"
-		" -e, --exec=/path/to/cmd        Script to run on successful DDNS update\n"
+		" -e, --exec=/path/to/cmd        Script to run on DDNS update\n"
+		"     --exec-mode=MODE           Set script run mode: compat, event:\n"
+		"                                - compat: successful DDNS update only, default\n"
+		"                                - event: any update status\n"
 		"     --check-config             Verify syntax of configuration file and exit\n"
 		" -f, --config=FILE              Use FILE name for configuration, default uses\n"
 		"                                ident NAME: %s\n"
@@ -323,6 +327,7 @@ int main(int argc, char *argv[])
 		{ "cmd",               1, 0, 'c' },
 		{ "continue-on-error", 0, 0, 'C' },
 		{ "exec",              1, 0, 'e' },
+		{ "exec-mode",         1, 0, 130 },
 		{ "config",            1, 0, 'f' },
 		{ "check-config",      0, 0, 129 },
 		{ "iface",             1, 0, 'i' },
@@ -368,6 +373,15 @@ int main(int argc, char *argv[])
 
 		case 'e':	/* --exec=CMD */
 			script_exec = optarg;
+			break;
+
+		case 130:	/* --exec-mode=MODE */
+			if (!strcmp(optarg, "event"))
+				event_mode = 1;
+			else if (!strcmp(optarg, "compat"))
+				event_mode = 0;
+			else
+				return usage(1);
 			break;
 
 		case 'f':	/* --config=FILE */

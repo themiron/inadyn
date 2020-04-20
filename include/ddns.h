@@ -198,6 +198,7 @@ extern int ignore_errors;
 extern int startup_delay;
 extern int allow_ipv6;
 extern int verify_addr;
+extern int event_mode;
 extern char *ident;
 extern char *prognm;
 extern char *iface;

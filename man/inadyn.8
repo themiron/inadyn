@@ -23,6 +23,7 @@
 .Op Fl c, -cmd Ar /path/to/cmd
 .Op Fl C, -continue-on-error
 .Op Fl e, -exec Ar /path/to/cmd
+.Op Fl -exec-mode Ar MODE
 .Op Fl f, -config Ar FILE
 .Op Fl h, -help
 .Op Fl i, -iface Ar IFNAME
@@ -206,6 +207,10 @@ is started with the
 command line option, the INADYN_IFACE environment variable is also set.
 You will need to quote the complete command if any arguments, or pipe,
 is given.
+.It Fl -exec-mode Ar MODE
+TODO: write about
+.Ar MODE
+here and change -exec description above.
 .It Fl f, -config Ar FILE
 Use
 .Ar FILE
